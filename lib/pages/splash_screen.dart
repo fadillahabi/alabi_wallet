@@ -1,5 +1,5 @@
 import 'package:daily_financial_recording/helper/preference.dart';
-import 'package:daily_financial_recording/main_screen.dart';
+import 'package:daily_financial_recording/pages/login.dart';
 import 'package:flutter/material.dart';
 
 class Open extends StatefulWidget {
@@ -24,7 +24,7 @@ class _OpenState extends State<Open> {
       // } else {
       Navigator.pushNamedAndRemoveUntil(
         context,
-        MainScreen.id,
+        Login.id, //Ubah Lokasinya disini BROO
         (route) => false,
       );
       // }

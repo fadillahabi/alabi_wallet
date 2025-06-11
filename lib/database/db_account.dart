@@ -1,0 +1,51 @@
+import 'package:daily_financial_recording/model/model_account.dart';
+import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
+
+class DBAccount {
+  static Future<Database> dbAccount() async {
+    final dbPath = await getDatabasesPath();
+    return openDatabase(
+      join(dbPath, 'account.db'),
+      onCreate: (db, version) {
+        return db.execute('''CREATE TABLE account(
+          id INTEGER PRIMARY KEY AUTOINCREMENT, 
+          nama TEXT, 
+          phone INTEGER, 
+          email TEXT,
+          password TEXT)''');
+      },
+      version: 1,
+    );
+  }
+
+  Future<void> insertAccount(ModelAccount account) async {
+    final db = await DBAccount.dbAccount();
+    await db.insert(
+      'account',
+      account.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<List<ModelAccount>> getAllAccount() async {
+    final db = await DBAccount.dbAccount();
+    final List<Map<String, dynamic>> maps = await db.query('account');
+    return List.generate(maps.length, (i) => ModelAccount.fromMap(maps[i]));
+  }
+
+  static Future<void> updateAccount(ModelAccount account) async {
+    final db = await DBAccount.dbAccount();
+    await db.update(
+      'account',
+      account.toMap(),
+      where: 'id=?',
+      whereArgs: [account.id],
+    );
+  }
+
+  static Future<void> deleteAccount(int id) async {
+    final db = await DBAccount.dbAccount();
+    await db.delete('account', where: 'id=?', whereArgs: [id]);
+  }
+}

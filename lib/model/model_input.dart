@@ -1,30 +1,32 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 class ModelInput {
   final int? id;
   final String namaProject;
   final String dateProject;
-  final int labaProject;
+  final int? labaProject;
   final String type;
-
   ModelInput({
     this.id,
     required this.namaProject,
     required this.dateProject,
-    required this.labaProject,
+    this.labaProject,
     required this.type,
   });
 
-  ModelInput.empty()
-    : id = null,
-      namaProject = '',
-      dateProject = '',
-      labaProject = 0,
-      type = 'income';
+  factory ModelInput.empty() {
+    return ModelInput(
+      id: null,
+      namaProject: '',
+      dateProject: '',
+      labaProject: 0,
+      type: 'income',
+    );
+  }
 
   Map<String, dynamic> toMap() {
-    return {
+    return <String, dynamic>{
       'id': id,
       'nama_project': namaProject,
       'date_project': dateProject,
@@ -36,14 +38,11 @@ class ModelInput {
   factory ModelInput.fromMap(Map<String, dynamic> map) {
     return ModelInput(
       id: map['id'] != null ? map['id'] as int : null,
-      namaProject: map['nama_project'] as String,
-      dateProject: map['date_project'] as String,
+      namaProject: map['nama_project']?.toString() ?? '',
+      dateProject: map['date_project']?.toString() ?? '',
       labaProject:
-          map['laba_project'] is int
-              ? map['laba_project']
-              : int.tryParse(map['laba_project'].toString()) ?? 0,
-
-      type: map['type'] as String? ?? 'income',
+          map['laba_project'] != null ? map['laba_project'] as int : null,
+      type: map['type']?.toString() ?? 'income',
     );
   }
 

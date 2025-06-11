@@ -1,4 +1,6 @@
 import 'package:daily_financial_recording/database/db_input.dart';
+import 'package:daily_financial_recording/pages/filter.dart';
+import 'package:intl/intl.dart';
 import 'package:daily_financial_recording/model/model_input.dart';
 import 'package:daily_financial_recording/pages/form_input.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +17,6 @@ class _DashboardUangState extends State<DashboardUang> {
   bool isIncomeSelected = true;
   bool tampilTeks = false;
   List<ModelInput> _transaction = [];
-
   int _totalBalance = 0;
 
   @override
@@ -30,15 +31,11 @@ class _DashboardUangState extends State<DashboardUang> {
 
     for (var t in list) {
       final isIncome = t.type == 'income';
-      final value = t.labaProject;
-
-      if (isIncome) {
-        total += value;
-      } else {
-        total -= value;
-      }
+      final value = t.labaProject ?? 0;
+      total += isIncome ? value : -value;
     }
 
+    if (!mounted) return;
     setState(() {
       _transaction = list;
       _totalBalance = total;
@@ -49,27 +46,31 @@ class _DashboardUangState extends State<DashboardUang> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        title: Text(
+        backgroundColor: const Color(0xff1E88E5),
+        elevation: 0,
+        toolbarHeight: 100,
+        title: const Text(
           "Wallet",
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
-        toolbarHeight: 100,
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
               children: [
                 if (tampilTeks)
-                  Text("Hello, User!", style: TextStyle(color: Colors.white)),
-                SizedBox(width: 8),
+                  const Text(
+                    "Hello, User!",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                const SizedBox(width: 8),
                 GestureDetector(
                   onTap: () {
                     setState(() {
                       tampilTeks = !tampilTeks;
                     });
                   },
-                  child: CircleAvatar(
+                  child: const CircleAvatar(
                     radius: 24,
                     child: CircleAvatar(
                       radius: 22,
@@ -82,92 +83,138 @@ class _DashboardUangState extends State<DashboardUang> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          height: MediaQuery.of(context).size.height,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [Color(0xff1E88E5), Color.fromARGB(255, 19, 86, 145)],
-            ),
+      body: Container(
+        width: double.infinity,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xff1E88E5), Color.fromARGB(255, 19, 86, 145)],
           ),
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20),
+        ),
+        child: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                const SizedBox(height: 20),
                 Text(
                   "Rp.${_formatCurrency(_totalBalance)}",
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 36,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Text(
                   "Total Balance",
                   style: TextStyle(color: Colors.grey[300], fontSize: 16),
                 ),
-                SizedBox(height: 24),
+                const SizedBox(height: 24),
+
+                // Tombol Navigasi
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    _iconButton(Icons.arrow_back, () {}),
-                    _iconButton(Icons.arrow_forward, () {}),
-                    _iconButton(Icons.refresh, () {}),
-                    _iconButton(Icons.add, () async {
+                    _iconButton(Icons.filter_list, "Filter", () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const FilterPage()),
+                      );
+                    }),
+                    _iconButton(Icons.add, "Add", () async {
                       final result = await Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (_) => FormInput(input: ModelInput.empty()),
                         ),
                       );
-                      if (result == true) {
-                        await _loadTransactions();
-                      }
+                      if (result == true) await _loadTransactions();
                     }),
                   ],
                 ),
-                SizedBox(height: 32),
-                SizedBox(
+
+                const SizedBox(height: 32),
+
+                // Header Transaksi
+                Container(
                   width: double.infinity,
-                  child: Container(
-                    padding: EdgeInsets.all(
-                      4,
-                    ), // Tambahkan padding agar tombol tidak rapat
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Row(
-                      children: [
-                        Text(
-                          "Latest Transaction",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
+                  padding: const EdgeInsets.all(4),
+                  child: const Row(
+                    children: [
+                      Text(
+                        "Latest Transaction",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
-                SizedBox(height: 16),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children:
-                      _transaction.map((t) {
-                        return incomeTile(
-                          id: t.id!,
-                          namaProject: t.namaProject,
-                          dateProject: t.dateProject,
-                          labaProject: t.labaProject,
-                          type: t.type,
+                const SizedBox(height: 16),
+
+                // List Transaksi
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: _transaction.length,
+                  itemBuilder: (context, index) {
+                    final t = _transaction[index];
+                    return incomeTile(
+                      id: t.id!,
+                      namaProject: t.namaProject,
+                      dateProject: t.dateProject,
+                      labaProject: t.labaProject,
+                      type: t.type,
+                      onUpdate: () async {
+                        final result = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder:
+                                (_) => FormInput(input: ModelInput.empty()),
+                          ),
                         );
-                      }).toList(),
+                        if (result == true && mounted)
+                          await _loadTransactions();
+                      },
+                      onDelete: () async {
+                        final confirm = await showDialog<bool>(
+                          context: context,
+                          builder:
+                              (_) => AlertDialog(
+                                title: const Text("Delete Confirmation"),
+                                content: const Text(
+                                  "Are you sure you want to delete this transaction?",
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed:
+                                        () => Navigator.pop(context, false),
+                                    child: const Text("Cancel"),
+                                  ),
+                                  TextButton(
+                                    onPressed:
+                                        () => Navigator.pop(context, true),
+                                    child: const Text("Delete"),
+                                  ),
+                                ],
+                              ),
+                        );
+                        if (confirm == true) {
+                          await DBInput.deleteInput(t.id!);
+                          if (mounted) await _loadTransactions();
+                        }
+                      },
+                    );
+                  },
                 ),
+                const SizedBox(
+                  height: 20,
+                ), // Tambahan padding bawah agar tidak terpotong
               ],
             ),
           ),
@@ -176,12 +223,15 @@ class _DashboardUangState extends State<DashboardUang> {
     );
   }
 
+  // Widget Transaksi
   Card incomeTile({
     required int id,
     required String namaProject,
     required String dateProject,
-    required int labaProject,
+    required int? labaProject,
     required String type,
+    required VoidCallback onUpdate,
+    required VoidCallback onDelete,
   }) {
     final isIncome = type == 'income';
     final color = isIncome ? Colors.green : Colors.red;
@@ -191,71 +241,102 @@ class _DashboardUangState extends State<DashboardUang> {
       color: Colors.white.withOpacity(0.8),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       elevation: 0,
-      margin: EdgeInsets.symmetric(vertical: 8),
+      margin: const EdgeInsets.symmetric(vertical: 8),
       child: Padding(
-        padding: EdgeInsets.all(12.0),
-        child: ListTile(
-          contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          title: Text(
-            namaProject,
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-          ),
-          subtitle: Text(
-            dateProject,
-            style: TextStyle(color: Colors.black, fontSize: 12),
-          ),
-          trailing: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                '$sign Rp.${_formatCurrency(labaProject)}',
-                style: TextStyle(
-                  color: color,
-                  fontSize: 14,
+        padding: const EdgeInsets.all(12.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ListTile(
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 8,
+                vertical: 4,
+              ),
+              title: Text(
+                namaProject,
+                style: const TextStyle(
+                  color: Colors.black,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              IconButton(
-                icon: Icon(Icons.delete, size: 20),
-                onPressed: () async {
-                  await DBInput.deleteInput(id);
-                  await _loadTransactions();
-                },
+              subtitle: Text(
+                dateProject,
+                style: const TextStyle(color: Colors.black, fontSize: 12),
               ),
-            ],
-          ),
+              trailing: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    '$sign Rp.${_formatCurrency(labaProject ?? 0)}',
+                    style: TextStyle(
+                      color: color,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // const SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton.icon(
+                  onPressed: onUpdate,
+                  icon: const Icon(Icons.edit, color: Colors.blue),
+                  label: const Text(
+                    "Edit",
+                    style: TextStyle(color: Colors.blue),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                TextButton.icon(
+                  onPressed: onDelete,
+                  icon: const Icon(Icons.delete, color: Colors.red),
+                  label: const Text(
+                    "Delete",
+                    style: TextStyle(color: Colors.red),
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
   }
-}
 
-@override
-Widget _iconButton(IconData icon, VoidCallback onPressed) {
-  return CircleAvatar(
-    radius: 44,
-    backgroundColor: Colors.white.withOpacity(0.15),
-    child: IconButton(
-      icon: Icon(icon, color: Colors.white),
-      iconSize: 28,
-      onPressed: onPressed,
-      padding: EdgeInsets.all(14),
-      // splashRadius: 24,
-    ),
-  );
-}
-
-String _formatCurrency(int amount) {
-  final str = amount.abs().toString();
-  final buffer = StringBuffer();
-  for (int i = 0; i < str.length; i++) {
-    int idx = str.length - i;
-    buffer.write(str[i]);
-    if (idx > 1 && idx % 3 == 1 && i != str.length - 1) {
-      buffer.write('.');
-    }
+  // Widget Tombol Icon
+  Widget _iconButton(IconData icon, String label, VoidCallback onPressed) {
+    return Column(
+      children: [
+        Container(
+          width: 70,
+          height: 70,
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.25),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: IconButton(
+            icon: Icon(icon, color: Colors.white),
+            iconSize: 28,
+            onPressed: onPressed,
+          ),
+        ),
+        // const SizedBox(height: 6),
+        Text(label, style: const TextStyle(color: Colors.white, fontSize: 14)),
+      ],
+    );
   }
-  final formatted = buffer.toString().split('').reversed.join();
-  return '${amount < 0 ? '-' : ''}$formatted,00';
+
+  // Format Uang
+  String _formatCurrency(int amount) {
+    final formatter = NumberFormat.currency(
+      locale: 'id_ID',
+      symbol: '',
+      decimalDigits: 0,
+    );
+    return '${formatter.format(amount)},00';
+  }
 }

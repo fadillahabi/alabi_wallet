@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:daily_financial_recording/database/db_input.dart';
 import 'package:daily_financial_recording/model/model_input.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class FilterPage extends StatefulWidget {
@@ -99,7 +99,12 @@ class _FilterPageState extends State<FilterPage> {
             Expanded(
               child:
                   _filteredTransactions.isEmpty
-                      ? const Center(child: Text("No transactions found."))
+                      ? const Center(
+                        child: Text(
+                          "No transactions found.",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      )
                       : ListView.builder(
                         itemCount: _filteredTransactions.length,
                         itemBuilder: (context, index) {
@@ -108,7 +113,7 @@ class _FilterPageState extends State<FilterPage> {
                               tx.type.trim().toLowerCase() == 'income';
                           return Card(
                             color: isIncome ? Colors.green[50] : Colors.red[50],
-                            margin: const EdgeInsets.symmetric(vertical: 8),
+                            margin: EdgeInsets.symmetric(vertical: 8),
                             child: ListTile(
                               title: Text(tx.namaProject),
                               subtitle: Text(tx.dateProject),

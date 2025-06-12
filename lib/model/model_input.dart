@@ -41,7 +41,11 @@ class ModelInput {
       namaProject: map['nama_project']?.toString() ?? '',
       dateProject: map['date_project']?.toString() ?? '',
       labaProject:
-          map['laba_project'] != null ? map['laba_project'] as int : null,
+          map['laba_project'] != null
+              ? (map['laba_project'] is int
+                  ? map['laba_project'] as int
+                  : int.tryParse(map['laba_project'].toString()))
+              : null,
       type: map['type']?.toString() ?? 'income',
     );
   }

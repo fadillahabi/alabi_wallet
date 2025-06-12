@@ -1,9 +1,9 @@
 import 'package:daily_financial_recording/database/db_input.dart';
-import 'package:daily_financial_recording/pages/filter.dart';
-import 'package:intl/intl.dart';
 import 'package:daily_financial_recording/model/model_input.dart';
+import 'package:daily_financial_recording/pages/filter.dart';
 import 'package:daily_financial_recording/pages/form_input.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class DashboardUang extends StatefulWidget {
   const DashboardUang({super.key});
@@ -71,8 +71,10 @@ class _DashboardUangState extends State<DashboardUang> {
                     });
                   },
                   child: const CircleAvatar(
-                    radius: 24,
+                    backgroundColor: Colors.black54,
+                    radius: 23,
                     child: CircleAvatar(
+                      backgroundColor: Colors.white,
                       radius: 22,
                       child: Icon(Icons.person_4, size: 28),
                     ),
@@ -84,7 +86,7 @@ class _DashboardUangState extends State<DashboardUang> {
         ],
       ),
       body: Container(
-        width: double.infinity,
+        height: MediaQuery.of(context).size.height,
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,

@@ -84,7 +84,7 @@ class _FormInputState extends State<FormInput> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: Colors.grey[100],
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         toolbarHeight: 72,
@@ -108,17 +108,11 @@ class _FormInputState extends State<FormInput> {
                   ),
                 ),
                 const SizedBox(height: 28),
-
-                // Nama Project
                 _buildTextField(
                   controller: namaProjectController,
                   label: 'Name',
                 ),
-
-                const SizedBox(height: 12),
-
-                // Tanggal Project
-                // Tanggal Project dengan DatePicker
+                SizedBox(height: 12),
                 _buildTextField(
                   controller: dateProjectController,
                   label: 'Date',
@@ -139,19 +133,13 @@ class _FormInputState extends State<FormInput> {
                     }
                   },
                 ),
-
-                const SizedBox(height: 12),
-
-                // Laba Project
+                SizedBox(height: 12),
                 _buildTextField(
                   controller: labaProjectController,
                   label: 'Salary',
                   keyboardType: TextInputType.number,
                 ),
-
-                const SizedBox(height: 12),
-
-                // Radio button income/outcome
+                SizedBox(height: 12),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -160,10 +148,7 @@ class _FormInputState extends State<FormInput> {
                     _buildRadio(TransactionType.outcome, 'Outcome'),
                   ],
                 ),
-
                 const SizedBox(height: 12),
-
-                // Tombol Submit
                 SizedBox(
                   width: double.infinity,
                   height: 50,

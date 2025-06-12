@@ -65,12 +65,14 @@ class _MainScreenState extends State<MainScreen> {
             ],
             onTap: (value) async {
               if (value == 1) {
-                bool? confirmExit = await showDialog<bool>(
+                bool? confirmLogout = await showDialog<bool>(
                   context: context,
                   builder:
                       (context) => AlertDialog(
-                        title: const Text("Exit Application"),
-                        content: const Text("Are you sure you want to exit?"),
+                        title: const Text("Log Out"),
+                        content: const Text(
+                          "Are you sure you want to log out from this account?",
+                        ),
                         actions: [
                           TextButton(
                             onPressed: () => Navigator.of(context).pop(false),
@@ -78,14 +80,18 @@ class _MainScreenState extends State<MainScreen> {
                           ),
                           TextButton(
                             onPressed: () => Navigator.of(context).pop(true),
-                            child: const Text("Exit"),
+                            child: const Text("Log Out"),
                           ),
                         ],
                       ),
                 );
 
-                if (confirmExit == true) {
-                  Navigator.of(context).pop(); // Bisa juga pakai exit(0);
+                if (confirmLogout == true) {
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    '/login', // pastikan ini adalah route ke halaman login kamu
+                    (route) => false, // menghapus semua halaman sebelumnya
+                  );
                 }
               } else {
                 setState(() {

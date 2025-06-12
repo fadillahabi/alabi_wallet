@@ -33,19 +33,4 @@ class DBAccount {
     final List<Map<String, dynamic>> maps = await db.query('account');
     return List.generate(maps.length, (i) => ModelAccount.fromMap(maps[i]));
   }
-
-  static Future<void> updateAccount(ModelAccount account) async {
-    final db = await DBAccount.dbAccount();
-    await db.update(
-      'account',
-      account.toMap(),
-      where: 'id=?',
-      whereArgs: [account.id],
-    );
-  }
-
-  static Future<void> deleteAccount(int id) async {
-    final db = await DBAccount.dbAccount();
-    await db.delete('account', where: 'id=?', whereArgs: [id]);
-  }
 }

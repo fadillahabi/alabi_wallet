@@ -73,18 +73,13 @@ class _LoginState extends State<Login> {
                       // Header
                       Container(
                         padding: EdgeInsets.only(top: 80, bottom: 40),
-                        child: Column(
-                          children: [
-                            Image.asset(
-                              'assets/images/logo_tanpa_nama.png',
-                              height: 60,
-                              color: Color(0xff1E88E5),
-                            ),
-                            SizedBox(height: 20),
-                          ],
+                        child: Image.asset(
+                          'assets/images/logo_tanpa_nama.png',
+                          height: 60,
+                          color: Color(0xff1E88E5),
                         ),
                       ),
-
+                      SizedBox(height: 20),
                       // Form Login
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 24),

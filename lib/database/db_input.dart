@@ -50,9 +50,9 @@ class DBInput {
     await dbIn.delete('input', where: 'id=?', whereArgs: [id]);
   }
 
-  static Future<void> deleteDatabaseFile() async {
-    final dbPath = await getDatabasesPath();
-    final path = join(dbPath, 'input.db');
-    await deleteDatabase(path);
-  }
+  // static Future<void> deleteDatabaseFile() async {
+  //   final dbPath = await getDatabasesPath();
+  //   final path = join(dbPath, 'input.db');
+  //   await deleteDatabase(path);
+  // }
 }

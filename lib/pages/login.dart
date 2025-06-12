@@ -1,4 +1,5 @@
 import 'package:daily_financial_recording/database/db_account.dart';
+import 'package:daily_financial_recording/helper/preference.dart';
 import 'package:daily_financial_recording/model/model_account.dart';
 import 'package:daily_financial_recording/pages/register.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,20 @@ class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
   bool _visibilityPassword = true;
   bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkIfLoggedIn();
+  }
+
+  void _checkIfLoggedIn() async {
+    final isLoggedIn = await PreferenceHandler.getLogin();
+    if (isLoggedIn) {
+      if (!mounted) return;
+      Navigator.pushReplacementNamed(context, '/main_screen');
+    }
+  }
 
   Future<void> _login() async {
     if (_formKey.currentState!.validate()) {
@@ -38,6 +53,7 @@ class _LoginState extends State<Login> {
       });
 
       if (account.email.isNotEmpty) {
+        PreferenceHandler.saveLogin(true);
         Navigator.pushReplacementNamed(context, '/main_screen');
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -148,7 +164,7 @@ class _LoginState extends State<Login> {
                                   return 'Enter your password';
                                 }
                                 if (value.length < 6) {
-                                  return 'Password must be at least 6 characters';
+                                  return 'Password Invalid';
                                 }
                                 return null;
                               },

@@ -1,3 +1,4 @@
+import 'package:daily_financial_recording/helper/preference.dart';
 import 'package:daily_financial_recording/pages/dashboard.dart';
 import 'package:flutter/material.dart';
 
@@ -60,7 +61,7 @@ class _MainScreenState extends State<MainScreen> {
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.exit_to_app_rounded),
-                label: "Exit",
+                label: "Log Out",
               ),
             ],
             onTap: (value) async {
@@ -87,10 +88,11 @@ class _MainScreenState extends State<MainScreen> {
                 );
 
                 if (confirmLogout == true) {
+                  PreferenceHandler.deleteLogin();
                   Navigator.pushNamedAndRemoveUntil(
                     context,
-                    '/login', // pastikan ini adalah route ke halaman login kamu
-                    (route) => false, // menghapus semua halaman sebelumnya
+                    '/login',
+                    (route) => false,
                   );
                 }
               } else {

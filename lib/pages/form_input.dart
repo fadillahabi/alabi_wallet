@@ -136,7 +136,7 @@ class _FormInputState extends State<FormInput> {
                 SizedBox(height: 12),
                 _buildTextField(
                   controller: labaProjectController,
-                  label: 'Salary',
+                  label: 'Laba',
                   keyboardType: TextInputType.number,
                 ),
                 SizedBox(height: 12),

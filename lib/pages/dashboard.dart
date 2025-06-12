@@ -208,7 +208,18 @@ class _DashboardUangState extends State<DashboardUang> {
                         );
                         if (confirm == true) {
                           await DBInput.deleteInput(t.id!);
-                          if (mounted) await _loadTransactions();
+                          if (mounted) {
+                            await _loadTransactions();
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  'Transaction deleted successfully',
+                                ),
+                                backgroundColor: Colors.red,
+                                duration: Duration(seconds: 2),
+                              ),
+                            );
+                          }
                         }
                       },
                     );

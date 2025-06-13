@@ -178,7 +178,15 @@ class _DashboardUangState extends State<DashboardUang> {
                           context,
                           MaterialPageRoute(
                             builder:
-                                (_) => FormInput(input: ModelInput.empty()),
+                                (_) => FormInput(
+                                  input: ModelInput(
+                                    id: t.id!,
+                                    namaProject: t.namaProject,
+                                    dateProject: t.dateProject,
+                                    labaProject: t.labaProject,
+                                    type: t.type,
+                                  ),
+                                ),
                           ),
                         );
                         if (result == true && mounted) {

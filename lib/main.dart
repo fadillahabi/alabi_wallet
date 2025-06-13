@@ -1,3 +1,4 @@
+import 'package:daily_financial_recording/constant/app_color.dart';
 import 'package:daily_financial_recording/pages/dashboard_page.dart';
 import 'package:daily_financial_recording/pages/filter_page.dart';
 import 'package:daily_financial_recording/pages/login_page.dart';
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Alabi Wallet',
       theme: ThemeData(
-        scaffoldBackgroundColor: Color(0xff1E88E5),
+        scaffoldBackgroundColor: AppColor.blue_main,
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
     );

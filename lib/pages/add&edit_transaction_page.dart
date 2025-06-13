@@ -1,3 +1,4 @@
+import 'package:daily_financial_recording/constant/app_color.dart';
 import 'package:daily_financial_recording/database/db_input.dart';
 import 'package:daily_financial_recording/model/model_input.dart';
 import 'package:flutter/material.dart';
@@ -88,7 +89,7 @@ class _FormInputState extends State<FormInput> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         toolbarHeight: 72,
-        iconTheme: const IconThemeData(color: Color(0xff1E88E5)),
+        iconTheme: const IconThemeData(color: AppColor.blue_main),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 28),
@@ -155,7 +156,7 @@ class _FormInputState extends State<FormInput> {
                   child: ElevatedButton(
                     onPressed: _isLoading ? null : _input,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF118EE0),
+                      backgroundColor: AppColor.blue_main,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(24),
                         side: const BorderSide(color: Colors.white, width: 2),
@@ -204,7 +205,7 @@ class _FormInputState extends State<FormInput> {
       },
       decoration: InputDecoration(
         filled: true,
-        fillColor: const Color(0x20118EE0),
+        fillColor: AppColor.black_11,
         labelText: label,
         labelStyle: TextStyle(color: Colors.grey[600]),
         enabledBorder: OutlineInputBorder(

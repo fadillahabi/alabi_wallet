@@ -20,7 +20,7 @@ class ModelInput {
       id: null,
       namaProject: '',
       dateProject: '',
-      labaProject: 0,
+      labaProject: null,
       type: 'income',
     );
   }

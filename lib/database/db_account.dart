@@ -21,6 +21,14 @@ class DBAccount {
 
   Future<void> insertAccount(ModelAccount account) async {
     final db = await DBAccount.dbAccount();
+    final existing = await db.query(
+      'account',
+      where: 'email = ? OR phone = ?',
+      whereArgs: [account.email, account.phone],
+    );
+    if (existing.isNotEmpty) {
+      throw Exception('Email or phone number already exists');
+    }
     await db.insert(
       'account',
       account.toMap(),

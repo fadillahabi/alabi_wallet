@@ -1,7 +1,8 @@
+import 'package:daily_financial_recording/constant/app_color.dart';
 import 'package:daily_financial_recording/database/db_input.dart';
 import 'package:daily_financial_recording/model/model_input.dart';
-import 'package:daily_financial_recording/pages/filter.dart';
-import 'package:daily_financial_recording/pages/form_input.dart';
+import 'package:daily_financial_recording/pages/add&edit_transaction_page.dart';
+import 'package:daily_financial_recording/pages/filter_page.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -46,7 +47,7 @@ class _DashboardUangState extends State<DashboardUang> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xff1E88E5),
+        backgroundColor: AppColor.blue_main,
         elevation: 0,
         toolbarHeight: 100,
         title: const Text(
@@ -91,7 +92,7 @@ class _DashboardUangState extends State<DashboardUang> {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Color(0xff1E88E5), Color.fromARGB(255, 19, 86, 145)],
+            colors: [AppColor.blue_main, AppColor.blue_gradient],
           ),
         ),
         child: SafeArea(
@@ -180,8 +181,9 @@ class _DashboardUangState extends State<DashboardUang> {
                                 (_) => FormInput(input: ModelInput.empty()),
                           ),
                         );
-                        if (result == true && mounted)
+                        if (result == true && mounted) {
                           await _loadTransactions();
+                        }
                       },
                       onDelete: () async {
                         final confirm = await showDialog<bool>(

@@ -1,7 +1,8 @@
+import 'package:daily_financial_recording/constant/app_color.dart';
 import 'package:daily_financial_recording/database/db_account.dart';
 import 'package:daily_financial_recording/helper/preference.dart';
 import 'package:daily_financial_recording/model/model_account.dart';
-import 'package:daily_financial_recording/pages/register.dart';
+import 'package:daily_financial_recording/pages/register_page.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
@@ -38,15 +39,22 @@ class _LoginState extends State<Login> {
       setState(() {
         _isLoading = true;
       });
-
       final accounts = await DBAccount().getAllAccount();
       final email = emailController.text.trim();
       final password = passwordController.text.trim();
 
       final account = accounts.firstWhere(
-        (account) => account.email == email && account.password == password,
+        (account) =>
+            account.email.toLowerCase() == email.toLowerCase() &&
+            account.password == password,
         orElse: () => ModelAccount.empty(),
       );
+      // print("Input email: $email");
+      // print("Input password: $password");
+      // print("Accounts in DB:");
+      // for (var acc in accounts) {
+      //   print("Email: ${acc.email}, Password: ${acc.password}");
+      // }
 
       setState(() {
         _isLoading = false;
@@ -54,7 +62,7 @@ class _LoginState extends State<Login> {
 
       if (account.email.isNotEmpty) {
         PreferenceHandler.saveLogin(true);
-        Navigator.pushReplacementNamed(context, '/main_screen');
+        Navigator.pushReplacementNamed(context, '/splash_page');
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -70,12 +78,7 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {},
-          icon: Icon(Icons.close, size: 32),
-        ),
-      ),
+
       body: LayoutBuilder(
         builder: (context, constraints) {
           return SingleChildScrollView(
@@ -86,13 +89,13 @@ class _LoginState extends State<Login> {
                   key: _formKey,
                   child: Column(
                     children: [
-                      // Header
+                      SizedBox(height: 56),
                       Container(
                         padding: EdgeInsets.only(top: 80, bottom: 40),
                         child: Image.asset(
                           'assets/images/logo_tanpa_nama.png',
                           height: 60,
-                          color: Color(0xff1E88E5),
+                          color: AppColor.blue_main,
                         ),
                       ),
                       SizedBox(height: 20),
@@ -174,9 +177,12 @@ class _LoginState extends State<Login> {
                               width: double.infinity,
                               height: 50,
                               child: ElevatedButton(
-                                onPressed: _isLoading ? null : _login,
+                                onPressed:
+                                    _isLoading
+                                        ? null
+                                        : _login, //Disini ubah alurnya broo
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: Color(0xFF118EE0),
+                                  backgroundColor: AppColor.blue_main,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(24),
                                   ),
@@ -236,7 +242,7 @@ class _LoginState extends State<Login> {
                                 borderRadius: BorderRadius.circular(24),
                                 side: BorderSide(
                                   width: 1,
-                                  color: Color(0xFF118EE0),
+                                  color: AppColor.blue_main,
                                 ),
                               ),
                             ),
@@ -244,7 +250,7 @@ class _LoginState extends State<Login> {
                               'Create New Account',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: Color(0xFF118EE0),
+                                color: AppColor.blue_main,
                               ),
                             ),
                           ),

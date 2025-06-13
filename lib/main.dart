@@ -1,9 +1,9 @@
-import 'package:daily_financial_recording/pages/dashboard.dart';
-import 'package:daily_financial_recording/pages/filter.dart';
-import 'package:daily_financial_recording/pages/login.dart';
-import 'package:daily_financial_recording/pages/main_screen.dart';
-import 'package:daily_financial_recording/pages/register.dart';
-import 'package:daily_financial_recording/pages/splash_screen.dart';
+import 'package:daily_financial_recording/pages/dashboard_page.dart';
+import 'package:daily_financial_recording/pages/filter_page.dart';
+import 'package:daily_financial_recording/pages/login_page.dart';
+import 'package:daily_financial_recording/pages/main_page.dart';
+import 'package:daily_financial_recording/pages/register_page.dart';
+import 'package:daily_financial_recording/pages/splash_page.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
         DashboardUang.id: (context) => DashboardUang(),
         MainScreen.id: (context) => MainScreen(),
         FilterPage.id: (context) => FilterPage(),
+        Open.id: (context) => Open(),
       },
       debugShowCheckedModeBanner: false,
       title: 'Alabi Wallet',

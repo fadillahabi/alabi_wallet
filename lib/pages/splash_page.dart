@@ -1,10 +1,10 @@
 import 'package:daily_financial_recording/helper/preference.dart';
-import 'package:daily_financial_recording/pages/login.dart';
+import 'package:daily_financial_recording/pages/login_page.dart';
 import 'package:flutter/material.dart';
 
 class Open extends StatefulWidget {
   const Open({super.key});
-  static const String id = "/splash_screen";
+  static const String id = "/splash_page";
 
   @override
   State<Open> createState() => _OpenState();
@@ -81,7 +81,6 @@ class _OpenState extends State<Open> {
             //           color: Colors.white70,
             //           fontSize: 16,
             //           fontWeight: FontWeight.w700,
-            //           fontFamily: "Roboto",
             //         ),
             //       ),
             //     ),

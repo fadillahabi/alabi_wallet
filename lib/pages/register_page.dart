@@ -1,3 +1,4 @@
+import 'package:daily_financial_recording/constant/app_color.dart';
 import 'package:daily_financial_recording/database/db_account.dart';
 import 'package:daily_financial_recording/model/model_account.dart';
 import 'package:flutter/material.dart';
@@ -30,18 +31,25 @@ class _RegisterState extends State<Register> {
         password: passwordController.text.trim(),
       );
 
-      await DBAccount().insertAccount(newAccount);
+      try {
+        await DBAccount().insertAccount(newAccount);
 
-      setState(() => _isLoading = false);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Account created successfully'),
+            backgroundColor: Colors.green,
+          ),
+        );
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Account created successfully'),
-          backgroundColor: Colors.green,
-        ),
-      );
-
-      Navigator.pushReplacementNamed(context, '/login');
+        Navigator.pushReplacementNamed(context, '/login');
+      } catch (e) {
+        final errorMsg = e.toString().replaceFirst('Exception: ', '');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(errorMsg), backgroundColor: Colors.red),
+        );
+      } finally {
+        setState(() => _isLoading = false);
+      }
     }
   }
 
@@ -50,6 +58,7 @@ class _RegisterState extends State<Register> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
@@ -74,7 +83,7 @@ class _RegisterState extends State<Register> {
                             Image.asset(
                               'assets/images/logo_tanpa_nama.png',
                               height: 60,
-                              color: Color(0xff1E88E5),
+                              color: AppColor.blue_main,
                             ),
                             SizedBox(height: 20),
                           ],
@@ -96,7 +105,6 @@ class _RegisterState extends State<Register> {
                               },
                             ),
                             SizedBox(height: 12),
-
                             TextFormField(
                               controller: phoneController,
                               decoration: _inputDecoration('No. HP'),
@@ -109,7 +117,6 @@ class _RegisterState extends State<Register> {
                               },
                             ),
                             SizedBox(height: 12),
-
                             TextFormField(
                               controller: emailController,
                               decoration: _inputDecoration('Email'),
@@ -125,7 +132,6 @@ class _RegisterState extends State<Register> {
                               },
                             ),
                             SizedBox(height: 12),
-
                             TextFormField(
                               controller: passwordController,
                               obscureText: _visibilityPassword,
@@ -156,14 +162,13 @@ class _RegisterState extends State<Register> {
                               },
                             ),
                             SizedBox(height: 16),
-
                             SizedBox(
                               width: double.infinity,
                               height: 50,
                               child: ElevatedButton(
                                 onPressed: _isLoading ? null : _register,
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: Color(0xFF118EE0),
+                                  backgroundColor: AppColor.blue_main,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(24),
                                     side: BorderSide(
@@ -189,9 +194,7 @@ class _RegisterState extends State<Register> {
                           ],
                         ),
                       ),
-
                       Spacer(),
-
                       Padding(
                         padding: EdgeInsets.symmetric(
                           horizontal: 24,
@@ -210,7 +213,7 @@ class _RegisterState extends State<Register> {
                                 borderRadius: BorderRadius.circular(24),
                                 side: BorderSide(
                                   width: 1,
-                                  color: Color(0xFF118EE0),
+                                  color: AppColor.blue_main,
                                 ),
                               ),
                             ),
@@ -218,7 +221,7 @@ class _RegisterState extends State<Register> {
                               'Already have an account? Log in',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: Color(0xFF118EE0),
+                                color: AppColor.blue_main,
                               ),
                             ),
                           ),

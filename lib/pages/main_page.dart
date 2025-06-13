@@ -1,5 +1,6 @@
+import 'package:daily_financial_recording/constant/app_color.dart';
 import 'package:daily_financial_recording/helper/preference.dart';
-import 'package:daily_financial_recording/pages/dashboard.dart';
+import 'package:daily_financial_recording/pages/dashboard_page.dart';
 import 'package:flutter/material.dart';
 
 class MainScreen extends StatefulWidget {
@@ -18,7 +19,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 19, 86, 145),
+      backgroundColor: AppColor.blue_gradient,
       body: _screen[_selectedIndex],
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
@@ -42,7 +43,7 @@ class _MainScreenState extends State<MainScreen> {
           child: BottomNavigationBar(
             backgroundColor: Colors.white,
             currentIndex: _selectedIndex,
-            selectedItemColor: const Color(0xFF118EE0),
+            selectedItemColor: AppColor.blue_main,
             unselectedItemColor: Colors.grey[400],
             selectedLabelStyle: const TextStyle(
               fontWeight: FontWeight.bold,
